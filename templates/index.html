@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask Frontend Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 2rem;
+        }
+        form {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        #message {
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome</h1>
+    <p>Enter your name and submit it to the Flask backend.</p>
+
+    <form id="greet-form">
+        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        const form = document.getElementById('greet-form');
+        const nameInput = document.getElementById('name');
+        const messageBox = document.getElementById('message');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const response = await fetch('/greet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: nameInput.value })
+            });
+
+            const data = await response.json();
+            messageBox.textContent = data.message;
+        });
+    </script>
+</body>
+</html>
